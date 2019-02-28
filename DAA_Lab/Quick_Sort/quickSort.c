@@ -69,7 +69,7 @@ void main()
     int i=0;
     for(;i<n;i++)
         // scanf("%d",&arr[i]);
-        arr[i]=rand()*100;
+        arr[i]=rand();
     clock_t start,end;
 
     start=clock();
