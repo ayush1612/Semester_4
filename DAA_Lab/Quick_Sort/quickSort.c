@@ -48,7 +48,7 @@ void quickSort(int arr[],int start,int end)
         quickSort(arr,pindex+1,end);
     }
 }
-
+/*
 void printArray(int arr[],int n)
 {
     //displaying the array
@@ -56,7 +56,7 @@ void printArray(int arr[],int n)
     for(;i<n;i++)
         printf("%d ",arr[i]);
 }
-
+*/
 //main function
 void main()
 {
@@ -77,6 +77,6 @@ void main()
     end=clock();
 
     double time = (double)(end-start)/CLOCKS_PER_SEC;
-    printf("Time taken=%F",time);
+    printf("Time taken=%f",time);
     // printArray(arr,n);
 }
