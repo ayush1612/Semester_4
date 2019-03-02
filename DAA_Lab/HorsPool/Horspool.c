@@ -30,12 +30,10 @@ int Horspool(char T[],char P[])
 			k++;
 		
 		if(k==m)
-			count++; 
+            return i-m+1; 
 			
 		i=i+Table[T[i]];
 	}
-	if(count>0)
-		return count;
 	return -1;
 }
 
@@ -47,7 +45,7 @@ void main()
 	
 	printf("Enter the string whose occurences are to be checked \n");
 	gets(P);
-	int cnt=0;
-	cnt=Horspool(T,P);
-	printf("Count=%d",cnt);
+
+	int occurence =Horspool(T,P);
+	printf("Occurence at %d",occurence);
 }
