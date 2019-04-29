@@ -31,7 +31,7 @@ void main()
 				{
 					min=cost[i][j];
 					a=u=i;
-					a=v=j;
+					b=v=j;
 				}
 			}
 		}
