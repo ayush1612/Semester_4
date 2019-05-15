@@ -65,3 +65,22 @@ void main()
 	}
 	printf("Minimum cost=%d\n",mincost);
 }
+
+//Sample Input for testing :
+/*
+a-----b
+| \   |
+|   \ |
+d-----c
+0 4 1 3
+4 0 2 999
+1 2 0 5
+3 999 5 0
+*/
+/*
+Output:
+Edge 0 -> 2	 weight=1
+Edge 2 -> 1	 weight=2
+Edge 0 -> 3	 weight=3
+Minimum Cost=6
+*/
