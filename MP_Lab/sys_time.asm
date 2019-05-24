@@ -1,61 +1,74 @@
-DATA SEGMENT 
-    
-     MSG1 DB 'CURRENT TIME IS : $'
-    HR DB ?
-    MIN DB ?
-    SEC DB ?
-    MSEC DB ?
-DATA ENDS
+
+;Used INTERRUPTS
+;AH=2CH  //Gets the system date
+;AH=02h // Displays the ascii value in DOS Prompt
+;For 2CH
+; Hours is in CH
+; Minutes is in CL
+; Seconds is in DH
+
+
+;Declaration Part
+ASSUME CS:CODE
 CODE SEGMENT
-ASSUME CS:CODE, DS:DATA
-   START:        MOV AX, DATA
-        MOV DS, AX
-        MOV AH,2CH    	 	; TO GET SYSTEM TIME
-        INT 21H
-        MOV HR, CH     	 	; CH -> HOUR
-        MOV MIN, CL   	  	; CL -> MINUTES
-        MOV SEC, DH     		; DH -> SECONDS
-        MOV MSEC, DL   	 	; DL -> 1/100TH SECOND
-        LEA DX, MSG1    		; DISPLAY MSG1
-        MOV AH, 09H
-        INT 21H
-        MOV AL, HR    		; IF AL=0D AAM WILL SPLIT THE NIBBLES INTO AH AND AL
-        AAM        			; SO AH=01 AND AL=03
-        MOV BX, AX
-        CALL DISPLAY    		; DISPLAY HOURS
-        MOV DL, ':'    		 ; DISPLAY ':' AFTER DISPLAYING HOUR
-        MOV AH, 02H
-        INT 21H
-        MOV AL, MIN      
-        AAM     
-        MOV BX, AX
-        CALL DISPLAY    		; DISPLAY MINUTES
-        MOV DL, ':'    	 	; DISPLAY ':' AFTER DISPLAYING MINUTES
-        MOV AH, 02H
-        INT 21H
-        MOV AL, SEC    
-        AAM                   
-        MOV BX, AX
-        CALL DISPLAY   	 	; DISPLAY SECONDS
-        MOV DL, '.'     		; DISPLAY '.' AFTER DISPLAYING SECONDS
-        MOV AH, 02H
-        INT 21H
-        MOV AL, MSEC   
-        AAM                     
-        MOV BX, AX
-        CALL DISPLAY    		; DISPLAY 1/100TH SECONDS
-        MOV AH, 4CH
-        INT 21H
-        DISPLAY PROC NEAR
-                MOV DL, BH
-                ADD DL, 30H    		; DISPLAY BH VALUE
-                MOV AH, 02H
-                INT 21H
-                MOV DL, BL
-                ADD DL, 30H    		; DISPLAY BL VALUE
-                MOV AH, 02H
-                INT 21H
-                RET
-      DISPLAY ENDP
+
+START: 
+    ;Hour Part
+HOUR:
+    MOV AH,2CH    ; To get System Time
+    INT 21H
+    MOV AL,CH     ; Hour is in CH
+    AAM
+    MOV BX,AX
+    CALL DISP
+
+    MOV DL,':'
+    MOV AH,02H    ; To Print : in DOS
+    INT 21H
+
+    ;Minutes Part
+MINUTES:
+    MOV AH,2CH    ; To get System Time
+    INT 21H
+    MOV AL,CL     ; Minutes is in CL
+    AAM
+    MOV BX,AX
+    CALL DISP
+
+    MOV DL,':'    ; To Print : in DOS
+    MOV AH,02H
+    INT 21H
+
+    ;Seconds Part
+Seconds:
+    MOV AH,2CH    ; To get System Time
+    INT 21H
+    MOV AL,DH     ; Seconds is in DH
+    AAM
+    MOV BX,AX
+    CALL DISP
+
+
+    ;To terminate the Program
+
+    MOV AH,4CH     ; To Terminate the Program
+    INT 21H
+
+    ;Display Part
+DISP PROC
+    MOV DL,BH      ; Since the values are in BX, BH Part
+    ADD DL,30H     ; ASCII Adjustment
+    MOV AH,02H     ; To Print in DOS
+    INT 21H
+    MOV DL,BL      ; BL Part 
+    ADD DL,30H     ; ASCII Adjustment
+    MOV AH,02H     ; To Print in DOS
+    INT 21H
+    RET
+DISP ENDP      ; End Disp Procedure
+
 CODE ENDS
-END START
+END START      ; End of MAIN
+      
+       
+    
