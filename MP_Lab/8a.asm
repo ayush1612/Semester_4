@@ -18,7 +18,7 @@ HOUR:
     MOV AH,2CH    ; To get System Time
     INT 21H
     MOV AL,CH     ; Hour is in CH
-    AAM
+    AAM            ;ASCII adjust after multiplication, it helps in getting the individual values like in 1234 it makes 12 34 
     MOV BX,AX
     CALL DISP
 
@@ -35,20 +35,6 @@ MINUTES:
     MOV BX,AX
     CALL DISP
 
-    MOV DL,':'    ; To Print : in DOS
-    MOV AH,02H
-    INT 21H
-
-    ;Seconds Part
-Seconds:
-    MOV AH,2CH    ; To get System Time
-    INT 21H
-    MOV AL,DH     ; Seconds is in DH
-    AAM
-    MOV BX,AX
-    CALL DISP
-
-
     ;To terminate the Program
 
     MOV AH,4CH     ; To Terminate the Program
@@ -56,10 +42,13 @@ Seconds:
 
     ;Display Part
 DISP PROC
+    ;this prints the upper nibble value
     MOV DL,BH      ; Since the values are in BX, BH Part
     ADD DL,30H     ; ASCII Adjustment
     MOV AH,02H     ; To Print in DOS
     INT 21H
+    
+    ;this stores the lower nibble value
     MOV DL,BL      ; BL Part 
     ADD DL,30H     ; ASCII Adjustment
     MOV AH,02H     ; To Print in DOS
