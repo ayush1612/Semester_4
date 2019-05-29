@@ -50,12 +50,28 @@ code segment
     loop rotate ;loops 8 times
     mov bl,ah ;to copy ah value into bl
     add ah,30h ;to convert binary into ascii
+    
     mov one,ah ;to copy ascii value into one
     lea dx,msg ;to point to msg
     mov ah,09h ;to display msg
     int 21h
+    
+    ;this code below checks if odd or even number of LEDs are glowing
+    ;if it will be odd basically bl will be having the bit pattern as "xxx1" (Ex: 3 LEDs ->bl=3 -> 0011)
+    ;if it will be even the last bit will be 0 (Ex: 4 LEDs means bl=4 -> 0100)
+    ; so if we rotate bl for once in right we will get to know if there is a 1 or a 0 in the last
+    ; 1 means odd thus carry is generated
+    ; 0 means even thus no carry generated
+    
+    mov al,00h
+    ror bl,1
+    jc next
+    mov al,0ffh
+  
+ next:
     mov dx,pa ;to copy address of port A
     out dx,al ;to move 8 bit data to port A
+    
     mov ah,4ch ;to exit the program 
     int 21h
 code ends
